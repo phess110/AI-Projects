@@ -3,8 +3,6 @@ public class State{
 	int player;
 	private int[] heur;  // heuristic values for the person and computer players respectively
 
-	public enum Outcome{ WIN, LOSS, DRAW, NOTA };
-
 	State(int h, int w){
 		board = new int[h][w];
 		heur = new int[2];
