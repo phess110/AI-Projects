@@ -1,6 +1,9 @@
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Scanner;
+import java.util.Random;
+import java.time.Duration;
+import java.time.Instant;
 
 public class Game{
 	private State s0;
@@ -11,7 +14,7 @@ public class Game{
 		height = m;
 		width = n;
 		in_a_row = k;
-		s0 = new State(n, m);
+		s0 = new State(m,n);
 		actions = new Action[n];
 		for(int i = 0; i < n; i++){
 			actions[i] = new Action(i);
@@ -22,7 +25,7 @@ public class Game{
 		height = m;
 		width = n;
 		in_a_row = k;
-		s0 = new State(m, n);
+		s0 = new State(m,n);
 		actions = new Action[n];
 		for(int i = 0; i < n; i++){
 			actions[i] = new Action(i);
@@ -48,8 +51,8 @@ public class Game{
 	}
 
 	/* returns set of applicable actions in current state s. O(n) */
-	Set<Action> applicableActions(State s){
-		Set<Action> applicable = new HashSet<Action>();
+	HashSet<Action> applicableActions(State s){
+		HashSet<Action> applicable = new HashSet<Action>();
 		for (Action a: actions){
 			if(!s.isFull(a.col)){
 				applicable.add(a);
@@ -59,24 +62,31 @@ public class Game{
 	}
 
 	/* computes the state which would result from applying action a in s0. O(nm) */
-	State result(Action a, int player){
-		State newState = s0.copy(height, width);
-		newState.player = other(s0.player);
-		newState.board[getRow(a.col)][a.col] = player; 
+	State result(State s, Action a){
+		State newState = s.copy(height, width);
+		newState.player = other(s.player);
+		newState.board[getRow(s, a.col) - 1][a.col] = s.player; 
 		return newState;
 	}
 
 	/* modifies state s0 of the game given action a (assumes a is applicable in current state) O(m) */
 	void applyAction(Action a, int player){
-		s0.board[getRow(a.col)][a.col] = player;
+		s0.board[getRow(a.col) - 1][a.col] = player;
 		s0.player = other(s0.player);
 	}
 
-	/* Returns row no. of empty slot in column c or -1 if the column is full. O(m) */
+	/* Returns top (filled) row in column c or -1 if the column is full. O(m) */
 	int getRow(int c){
-		if(s0.isFull(c)){ return -1; }
-		int i = 1;
-		while(i < height - 1 && s0.board[i+1][c] == 0){
+		int i = 0;
+		while(i < height && s0.board[i][c] == 0){
+			i++;
+		}
+		return i;
+	}
+
+	int getRow(State s, int c){
+		int i = 0;
+		while(i < height && s.board[i][c] == 0){
 			i++;
 		}
 		return i;
@@ -102,7 +112,7 @@ public class Game{
 
 	Outcome isTie(State s){
 		for(int k = 0; k < width; k++){ 
-			if( !s.isFull(k) ){ return Outcome.DRAW; }
+			if( !s.isFull(k) ){ return Outcome.NOTA; }
 		}
 		return Outcome.DRAW;
 	}
@@ -112,11 +122,11 @@ public class Game{
 	A good move is any move builds on, or creates, a good sequence. The heuristic counts the number of good moves. 
 	This function updates the number of good moves for the human + computer after move (i,j) -> state s. Returns the outcome of state s.
 	*/ 
-	void updateHeuristic(State s, int player){
+	void updateHeuristic(State s){
 		for(int c = 0; c < width; c++){
-			for(int r = getRow(c); r >= 0; r++){
-				update(s, player, r, c, 1);
-				update(s, other(player), r, c, -1);
+			for(int r = getRow(s,c) - 1; r >= 0; r--){
+				update(s, s.player, r, c);
+				update(s, other(s.player), r, c);
 				if(c > 0 && c < width-1 && s.board[r][c-1] == 0 && s.board[r][c+1] == 0){
 					break;
 				}else if(c == width-1 && s.board[r][c-1] == 0){
@@ -128,10 +138,10 @@ public class Game{
 		}
 	}
 
-	void update(State s, int player, int i, int j, int val){
+	void update(State s, int player, int i, int j){
 		if(	lowerDiag(s,player,i,j) == in_a_row-1 	|| upperDiag(s,player,i,j) == in_a_row-1 
 			|| horizontal(s,player,i,j) == in_a_row-1 || vertical(s,player,i,j) == in_a_row-1){
-			s.adjustHeuristic(player, val);
+			s.adjustHeuristic(player);
 		}
 	}
 
@@ -213,9 +223,7 @@ public class Game{
 		}
 	}
 
-	static void printRules(){ System.out.println(""); }
-
-	public class Opponent{
+	public static class Opponent{
 		private int maxDepth;
 		private int mode;
 
@@ -231,14 +239,22 @@ public class Game{
 		//returns action of opponent in state s0
 		Action getMove(Game g){
 			switch(mode) {
-				case 1: return minimax(g);
-				case 2:	return alphaBetaPrune(g);
-				case 3:	return hminimax(g);
+				case 2: return minimax(g);
+				case 3:	return alphaBetaPrune(g);
+				case 4:	return hminimax(g);
 				default: return randomAction(g);
 			}
 		}
 
-		Action randomAction(Game g){ /* todo */ return new Action(1); }
+		Action randomAction(Game g){ 
+			HashSet<Action> acts = g.applicableActions(g.getState());
+			Random rand = new Random(); 
+			Action a = new Action(rand.nextInt(g.width));
+			while(!acts.contains(a)){
+				a.col = rand.nextInt(g.width);
+			}
+			return a; 
+		}
 
 		Action minimax(Game g){ return g.minVal(g.getState()).getAction(); }
 
@@ -261,29 +277,30 @@ public class Game{
 		}
 		
 		//sets this to minimum of n and this 
-		void min(Node n){
-			if(n.val < this.val){
-				this.val = n.val;
-				this.a = n.a;
+		void min(Action act, double v){
+			if(v < this.val){
+				this.val = v;
+				this.a = act;
 			}
 		}
 
-		void max(Node n){
-			if(n.val > this.val){
-				this.val = n.val;
-				this.a = n.a;
+		void max(Action act, double v){
+			if(v > this.val){
+				this.val = v;
+				this.a = act;
 			}
 		}
 	}
 
+	/* FIX the fucking result function it doesn't fucking work */
 	Node maxVal(State s, int alpha, int beta){
 		Node optimal = new Node(null, -2);
 		State r;
 		for(Action a: applicableActions(s)){
-			r = result(a, s.player);
-			Outcome o = terminalTest(r, getRow(a.col), a.col);
-			if( o != Outcome.DRAW ){ return new Node(a, utility(o)); }
-			optimal.max(minVal(r, alpha, beta));
+			r = result(s, a);
+			Outcome o = terminalTest(r, getRow(r,a.col), a.col);
+			if( o != Outcome.NOTA ){ return new Node(a, utility(o)); }
+			optimal.max(a, minVal(r, alpha, beta).val);
 			if(optimal.val >= beta){ break; } // min has a better choice
 			alpha = Math.max(alpha, (int)optimal.val);
 		}
@@ -294,10 +311,10 @@ public class Game{
 		Node optimal = new Node(null, 2);
 		State r;
 		for(Action a: applicableActions(s)){
-			r = result(a, s.player);
-			Outcome o = terminalTest(r, getRow(a.col), a.col);
-			if( o != Outcome.DRAW ){ return new Node(a, utility(o)); }
-			optimal.min(maxVal(r, alpha, beta));
+			r = result(s, a);
+			Outcome o = terminalTest(r, getRow(r,a.col), a.col);
+			if( o != Outcome.NOTA ){ return new Node(a, utility(o)); }
+			optimal.min(a, maxVal(r, alpha, beta).val);
 			if(optimal.val <= alpha){ break; } // max has a better choice
 			beta = Math.min(beta, (int)optimal.val);
 		}
@@ -308,10 +325,10 @@ public class Game{
 		Node optimal = new Node(null, 2);
 		State r;
 		for(Action a: applicableActions(s)){
-			r = result(a, s.player);
-			Outcome o = terminalTest(r, getRow(a.col), a.col);
-			if( o != Outcome.DRAW ){ return new Node(a, utility(o)); }
-			optimal.min(maxVal(r));
+			r = result(s, a);
+			Outcome o = terminalTest(r, getRow(r, a.col), a.col);
+			if( o != Outcome.NOTA ){ return new Node(a, utility(o)); }
+			optimal.min(a, maxVal(r).val);
 		}
 		return optimal;
 	}
@@ -320,10 +337,10 @@ public class Game{
 		Node optimal = new Node(null, -2);
 		State r;
 		for(Action a: applicableActions(s)){
-			r = result(a, s.player);
-			Outcome o = terminalTest(r, getRow(a.col), a.col);
-			if( o != Outcome.DRAW ){ return new Node(a, utility(o)); }
-			optimal.max(minVal(r));
+			r = result(s, a);
+			Outcome o = terminalTest(r, getRow(r, a.col), a.col);
+			if( o != Outcome.NOTA ){ return new Node(a, utility(o)); }
+			optimal.max(a, minVal(r).val);
 		}
 		return optimal;
 	}
@@ -333,15 +350,15 @@ public class Game{
 		State r;
 		int row;
 		for(Action a: applicableActions(s)){
-			r = result(a, s.player);
-			row = getRow(a.col);
+			r = result(s,a);
+			row = getRow(r, a.col);
 			Outcome o = terminalTest(r, row, a.col);
-			if( o != Outcome.DRAW ){ return new Node(a, utility(o)); }
+			if( o != Outcome.NOTA ){ return new Node(a, utility(o)); }
 			if(depth >= maxDepth){ 
-				updateHeuristic(r, r.player);
+				updateHeuristic(r);
 				return new Node(a, r.heuristic()); 
 			}
-			optimal.min(hmaxVal(r, depth+1, maxDepth));
+			optimal.min(a,hmaxVal(r, depth+1, maxDepth).val);
 		}
 		return optimal;
 	}
@@ -351,51 +368,70 @@ public class Game{
 		State r;
 		int row;
 		for(Action a: applicableActions(s)){
-			r = result(a, s.player);
-			row = getRow(a.col);
+			r = result(s,a);
+			row = getRow(r, a.col);
 			Outcome o = terminalTest(r, row, a.col);
-			if( o != Outcome.DRAW ){ return new Node(a, utility(o)); }
+			if( o != Outcome.NOTA ){ return new Node(a, utility(o)); }
 			if(depth >= maxDepth){ 
-				updateHeuristic(r, r.player);
+				updateHeuristic(r);
 				return new Node(a, r.heuristic()); 
 			}
-			optimal.max(hminVal(r, depth+1, maxDepth));
+			optimal.max(a,hminVal(r, depth+1, maxDepth).val);
 		}
 		return optimal;
 	}
 
 	public static void main(String[] args){
-		Opponent o;
+		Opponent opp;
 		Scanner sc = new Scanner(System.in);
-		printRules(); //todo
-
-		System.out.print("Enter 1 for 3x3x3 or 2 for 6x7x4:"); //validate inputs....
+		System.out.print("Choose the board dimensions.\nEnter 1 for 3x3x3 or 2 for 6x7x4: "); //validate inputs....
 		int boardType = sc.nextInt();
-		System.out.print("Enter 1 for minimax, 2 for alpha/beta pruning, 3 for h-Minimax:");
+		System.out.print("Choose opponent type.\nEnter 1 for random, 2 for minimax, 3 for alpha/beta pruning, 4 for h-Minimax: ");
 		int mode = sc.nextInt();
 		if(mode == 3){
-			System.out.print("Enter the maximum depth:")
+			System.out.print("Enter the maximum depth:");
 			int depth = sc.nextInt();
-			o = new Opponent(mode, depth);
+			opp = new Opponent(mode, depth);
 		}else{
-			o = new Opponent(mode);
+			opp = new Opponent(mode);
 		}
 
-		play(o, boardType);
+		switch(play(opp, boardType)){
+			case WIN: System.out.println("You win.");
+					break;
+			case LOSS: System.out.println("You lose.");
+					break;
+			default: System.out.println("It's a tie.");
+		}
 	}
 
-	static void play(Opponent o, int boardType){
+	static Outcome play(Opponent o, int boardType){
 		Game g;
-		if(boardType == 1){
-			g = new Game(3,3,3);
-		}else{
-			g = new Game(6,7,4);
-		}
+		Action a;
+		Instant start, end;
+		Outcome r;
+		Scanner sc = new Scanner(System.in);
+		if(boardType == 1){ g = new Game(3,3,3);} else{ g = new Game(6,7,4); }
 
 		while(true){
-		//get/apply user input, call terminal test, if WIN/Loss/draw -> break;
-		//get/apply opponent move, call terminal test, if WIN/loss/draw -> break;
-		o.getMove(this);
+			g.displayBoard();
+			System.out.print("Enter your move (column no. 0-" + (g.width - 1) + "): ");
+			a = new Action(sc.nextInt());
+			while(! g.applicableActions(g.getState()).contains(a) ){ //check if move is valid
+				System.out.print("Not a valid move, try again: ");
+				a = new Action(sc.nextInt());
+			}
+			g.applyAction(a,1);
+			r = g.terminalTest(g.getState(),g.getRow(a.col),a.col);
+			if( r != Outcome.NOTA ){ return r; } 
+			start = Instant.now();
+			a = o.getMove(g);
+			end = Instant.now();
+			g.applyAction(a,2);
+			Duration diff = Duration.between(start, end);
+			System.out.println("Opponent's move: column " + a.col + ".\nTime elapsed: " + diff.toMillis() + "ms");
+			r = g.terminalTest(g.getState(),g.getRow(a.col),a.col);
+			if( r != Outcome.NOTA ){ return r; } 
 		}
 	}
 }

@@ -20,14 +20,15 @@ public class State{
 		return newState;
 	}
 
-	void adjustHeuristic(int p, int change){
-		heur[p-1] += change;
+	void adjustHeuristic(int p){
+		heur[p-1] += 1;
 	}
 
 	/* Heuristic used by hMinimax */
 	double heuristic(){
-		return (heur[0] - heur[1])/(double)(heur[0] + heur[1] + 1);
-	}
+		int m = Math.max(1, heur[0] + heur[1]);
+		return player == 1 ? heur[0]/(double)m : -heur[1]/(double)m;
+	} 
 
 	/* Check if column is full */
 	boolean isFull(int col){
