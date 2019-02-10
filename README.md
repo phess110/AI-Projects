@@ -4,7 +4,7 @@
 
 The utility function takes a terminal state *s* at a depth *d* moves from the current state and returns 
 
-![equation](https://latex.codecogs.com/svg.latex?u%28s%2Cd%29%20%3D%20%5Cbegin%7Bcases%7D%20100%20-%20d%20%26%5Ctext%7Bif%20%5Ctextsc%7Boutcome%7D%28%7D%20s%7B%29%7D%20%3D%20%5Ctexttt%7BAIWIN%7D%20%5C%5C%20-100%20&plus;%20d%20%26%5Ctext%7Bif%20%5Ctextsc%7Boutcome%7D%28%7D%20s%7B%29%7D%20%3D%20%5Ctexttt%7BAILOSS%7D%20%5Cend%7Bcases%7D)
+![equation](https://latex.codecogs.com/svg.latex?u%28s%2Cd%29%20%3D%20%5Cbegin%7Bcases%7D%2050%20-%20d%20%26%5Ctext%7Bif%20%5Ctextsc%7Boutcome%7D%28%7D%20s%7B%29%7D%20%3D%20%5Ctexttt%7BAIWIN%7D%20%5C%5C%20-50%20&plus;%20d%20%26%5Ctext%7Bif%20%5Ctextsc%7Boutcome%7D%28%7D%20s%7B%29%7D%20%3D%20%5Ctexttt%7BAILOSS%7D%20%5Cend%7Bcases%7D)
 
 The 50 is not, per se, a necessary constant other than the fact that any game is at most 42 steps long, so regardless of the depth, a win is always valued more than a tie, and a tie more than a loss.
 
