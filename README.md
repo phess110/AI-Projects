@@ -8,6 +8,6 @@ The utility function takes a terminal state *s* at a depth *d* moves from the cu
 
 The 50 is not, per se, a necessary constant other than the fact that any game is at most 42 steps long, so regardless of the depth, a win is always valued more than a tie, and a tie more than a loss.
 
-A *good sequence* for player *i* is a sequence of *k-2* of player *i*'s tiles on the game board. A *good move* builds on, or creates a good sequence. The heuristic function compute the number of good moves for the human and the AI and returns the difference, so as to incentivize the AI to block the human's good sequences and build its own.
+A *good sequence* for player *i* is a sequence of *k-2* of player *i*'s tiles on the game board. A *good move* builds on, or creates a good sequence. The heuristic function computes the number of good moves for the human and the AI and returns the difference, so as to incentivize the AI to block the human's good sequences and build its own.
 
 - **Project 2:**
