@@ -1,6 +1,6 @@
 public class Action{
 	int col;
-	Action(int j){ col = j; }
+	Action(int i){ col = i; }
 
 	@Override
 	public boolean equals(Object o){

@@ -4,11 +4,13 @@ JC = javac
         $(JC) $*.java
 
 CLASSES = \
-        Game.java \
+        Action.java \
+        Outcome.java \
         State.java \
-        Action.java 
+        Game.java \
+        Connect.java
 
-MAIN = Game
+MAIN = Connect
 
 default: classes
 

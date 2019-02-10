@@ -1,1 +1,1 @@
-public enum Outcome{ WIN, LOSS, DRAW, NOTA };
+public enum Outcome{ AILOSS, AIWIN, DRAW, NOTA };
