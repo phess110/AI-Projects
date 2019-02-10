@@ -295,7 +295,7 @@ public class Connect implements Game{
 			for(Action a: g.applicableActions(g.getState())){
 				r = g.result(g.s0, a);
 				m = g.hminVal(r, a, 0);
-				System.out.println(m + "  " + a.col);
+				//System.out.println(m + "  " + a.col);
 				if( m > v ){
 					opt = a;
 					v = m;
