@@ -294,8 +294,7 @@ public class Connect implements Game{
 			State r;
 			for(Action a: g.applicableActions(g.getState())){
 				r = g.result(g.s0, a);
-				m = g.hminVal(r, a, 0);
-				//System.out.println(m + "  " + a.col);
+				m = g.hminVal(r, Integer.MIN_VALUE, Integer.MAX_VALUE, a, 0);
 				if( m > v ){
 					opt = a;
 					v = m;
@@ -359,10 +358,10 @@ public class Connect implements Game{
 		return v;
 	}
 
-	int hminVal(State s, Action recent, int depth){
+	int hminVal(State s, int alpha, int beta, Action recent, int depth){
 		Outcome o = terminalTest(s, recent);
 		if( o != Outcome.NOTA )
-			{ return utility(o, 0); }
+			{ return utility(o, depth); }
 
 		int v = Integer.MAX_VALUE;
 		State r;
@@ -371,15 +370,18 @@ public class Connect implements Game{
 			if(depth >= maxDepth){ 
 				return heuristic(r); 
 			}
-			v = Math.min(v, hmaxVal(r, a, depth+1));
+			v = Math.min(v, hmaxVal(r, alpha, beta, a, depth+1));
+			if(v <= alpha)
+				{ return v; }
+			beta = Math.min(beta, v);
 		}
 		return v;
 	}
 
-	int hmaxVal(State s, Action recent, int depth){
+	int hmaxVal(State s, int alpha, int beta, Action recent, int depth){
 		Outcome o = terminalTest(s, recent);
 		if( o != Outcome.NOTA )
-			{ return  utility(o, 0); }
+			{ return  utility(o, depth); }
 
 		int v = Integer.MIN_VALUE;
 		State r;
@@ -388,7 +390,10 @@ public class Connect implements Game{
 			if(depth >= maxDepth){ 
 				return heuristic(r);
 			}
-			v = Math.max(v, hminVal(r, a, depth+1));
+			v = Math.max(v, hminVal(r, alpha, beta, a, depth+1));
+			if(v >= beta)
+				{ return v; }
+			alpha = Math.max(alpha, v);
 		}
 		return v;
 	}
