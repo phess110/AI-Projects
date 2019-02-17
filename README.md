@@ -10,4 +10,12 @@ The 50 is not, per se, a necessary constant other than the fact that any game is
 
 A *good sequence* for player *i* is a sequence of *k-2* of player *i*'s tiles on the game board. A *good move* builds on, or creates a good sequence. The heuristic function computes the number of good moves for the human and the AI and returns the difference, so as to incentivize the AI to block the human's good sequences and build its own.
 
-- **Project 2:**
+- **Project 2:** Constraint Satisfaction Problem Solver. A *constraint satisfaction problem (CSP)* is a 3-tuple ![equation](https://latex.codecogs.com/svg.latex?%28X%2CD%2CC%29) where 
+
+  -  ![equation](https://latex.codecogs.com/svg.latex?X) is a set of variables.
+  -  ![equation](https://latex.codecogs.com/svg.latex?D) is a set of domains, one for each variable.
+  -  ![equation](https://latex.codecogs.com/svg.latex?C) is a set of constraints of the form ![equation](https://latex.codecogs.com/svg.latex?%5Clangle%20S%2C%20R%20%5Crangle) where ![equation](https://latex.codecogs.com/svg.latex?S) is a tuple of variables and ![equation](https://latex.codecogs.com/svg.latex?R) is a relation on the variables in ![equation](https://latex.codecogs.com/svg.latex?S).
+
+For example, if ![equation](https://latex.codecogs.com/svg.latex?S%20%3D%20%28X_1%2C%5Cldots%2C%20X_k%29) then ![equation](https://latex.codecogs.com/svg.latex?R%20%5Csubseteq%20D_1%5Ctimes%20%5Cldots%20%5Ctimes%20D_k) and an assignment ![equation](https://latex.codecogs.com/svg.latex?%5C%7BX_1%3Da_1%2CX_2%3Da_2%2C%5Cldots%2CX_k%3Da_k%5C%7D) satisfies ![equation](https://latex.codecogs.com/svg.latex?R) if ![equation](https://latex.codecogs.com/svg.latex?%28a_1%2C%5Cldots%2C%20a_k%29%20%5Cin%20R).
+
+A solution to a CSP is an assignment of the variables in ![equation](https://latex.codecogs.com/svg.latex?X) satsifying every constraint in ![equation](https://latex.codecogs.com/svg.latex?C). The backtracking algorithm solves instances of arbirary CSPs. Included are implementations for map coloring, job scheduling, and the n-queens CSPs.
