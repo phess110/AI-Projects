@@ -10,7 +10,7 @@ The 50 is not, per se, a necessary constant other than the fact that any game is
 
 A *good sequence* for player *i* is a sequence of *k-2* of player *i*'s tiles on the game board. A *good move* builds on, or creates a good sequence. The heuristic function computes the number of good moves for the human and the AI and returns the difference, so as to incentivize the AI to block the human's good sequences and build its own.
 
-- **Project 2:** Constraint Satisfaction Problem Solver. A *constraint satisfaction problem (CSP)* is a 3-tuple ![equation](https://latex.codecogs.com/svg.latex?%28X%2CD%2CC%29) where 
+- **Project 2: Constraint Satisfaction Problem Solver**. A *constraint satisfaction problem (CSP)* is a 3-tuple ![equation](https://latex.codecogs.com/svg.latex?%28X%2CD%2CC%29) where 
 
   -  ![equation](https://latex.codecogs.com/svg.latex?X) is a set of variables.
   -  ![equation](https://latex.codecogs.com/svg.latex?D) is a set of domains, one for each variable.
