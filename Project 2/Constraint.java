@@ -10,6 +10,9 @@ public abstract class Constraint<T>{
 		rel = r;
 	}
 
+	public ArrayList<Variable<T>> getScope(){ return scope; }
+	public Relation<T> getRelation(){ return rel; }
+
 	//check if variable v lies in the scope of constraint
 	boolean inScope(Variable<T> v){
 		return scope.contains(v);
