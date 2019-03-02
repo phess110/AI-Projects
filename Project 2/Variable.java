@@ -17,9 +17,9 @@ public abstract class Variable<T>{
 	public String toString(){ return varName; }
 	public ArrayList<T> getDomain(){ return domain.getList(); }
 	public boolean isEmpty(){ return domain.isEmpty(); }
-	public boolean getSize(){ return domain.size(); }
+	public int getSize(){ return domain.size(); }
 	public void reset(){ domain.reset(); }
 	public void remove(int idx){ domain.remove(idx); }
 	public void assign(T v){ domain.assign(v); }
-	public boolean contains(int idx){ return !domain.removed(idx); }
+	public boolean removed(int idx){ return domain.removed(idx); }
 }

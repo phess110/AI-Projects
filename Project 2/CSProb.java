@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.time.Duration;
+import java.time.Instant;
 
 public abstract class CSProb<T>{
 	
@@ -11,14 +13,7 @@ public abstract class CSProb<T>{
 		cons = new ArrayList<Constraint<T>>();
 	}
 	
-	public ArrayList<Variable<T>> getv(){ //REMOVE
-		return vars;
-	}
-
-	public ArrayList<Constraint<T>> getc(){ //REMOVE
-		return cons;
-	}
-	
+	public abstract void printSolution(ArrayList<T> assignment);
 	public Variable<T> getVar(int idx){ return vars.get(idx); }
 	public void addVar(Variable<T> v){ vars.add(v); }
 	public void addConstraint(Constraint<T> c){ cons.add(c); }
@@ -28,7 +23,16 @@ public abstract class CSProb<T>{
 		for(int i = 0; i < vars.size(); i++){
 			assignment.add(null);
 		}
+		AC();
 		return backtracking(assignment);
+	}
+
+	public ArrayList<T> backtrackingInferenceSearch(){
+		ArrayList<T> assignment = new ArrayList<T>(vars.size());
+		for(int i = 0; i < vars.size(); i++){
+			assignment.add(null);
+		}
+		return backtrackingWithInference(assignment);
 	}
 
 	public ArrayList<T> backtracking(ArrayList<T> assignment){
@@ -36,11 +40,12 @@ public abstract class CSProb<T>{
 			return assignment;
 		}
 		Variable<T> v = getUnassignedVar(assignment);
-		for(T value: v.getDomain()){ //order domain?
-			if(!v.contains(value)){ continue; } //value has been removed
+		ArrayList<T> dom = v.getDomain();
+		for(int i = 0; i < dom.size(); i++){
+			if(v.removed(i)){ continue; }
+			T value = dom.get(i);
 			if(isConsistent(v, value, assignment)){
 				assignment.set(v.getHash(), value);
-				//infrancing goes here
 				ArrayList<T> result = backtracking(assignment);
 				if(result != null){
 					return result;
@@ -57,7 +62,7 @@ public abstract class CSProb<T>{
 		int c = Integer.MAX_VALUE;
 		int temp;
 		for(int i = 0; i < assignment.size(); i++){
-			if(assignment.get(i) == null){ 
+			if(assignment.get(i) == null){ //unassigned
 				temp = vars.get(i).getSize();
 				if(temp < c){
 					min = vars.get(i); 
@@ -83,7 +88,6 @@ public abstract class CSProb<T>{
 			}
 		}
 		return max;
-	*/
 
 	public int countConsUsing(Variable<T> v){
 		int counter = 0;
@@ -92,6 +96,7 @@ public abstract class CSProb<T>{
 		}
 		return counter;
 	}
+	*/
 
 	public boolean isComplete(ArrayList<T> assignment){
 		for(T val: assignment){
@@ -112,7 +117,31 @@ public abstract class CSProb<T>{
 		return true;
 	}
 
-	public abstract void printSolution(ArrayList<T> assignment);
+	void run(){
+		Instant start = Instant.now();
+		ArrayList<T> sol = backtrackingSearch();
+		Instant end = Instant.now();
+		Duration timeElapsed = Duration.between(start, end);
+		if(sol != null){
+			printSolution(sol);
+		}else{
+			System.out.println("There is no solution.");
+		}
+		System.out.println("Time taken: "+ timeElapsed.toMillis() +" milliseconds");
+	}
+
+	void runWithInference(){
+		Instant start = Instant.now();
+		ArrayList<T> sol = backtrackingInferenceSearch();
+		Instant end = Instant.now();
+		Duration timeElapsed = Duration.between(start, end);
+		if(sol != null){
+			printSolution(sol);
+		}else{
+			System.out.println("There is no solution.");
+		}
+		System.out.println("Time taken: "+ timeElapsed.toMillis() +" milliseconds");
+	}
 
 	/*
 	* Imposes initial arc consistency
@@ -175,12 +204,11 @@ public abstract class CSProb<T>{
 		ArrayList<T> xiDom = xi.getDomain();
 		ArrayList<T> xjDom = xj.getDomain();
 		T x, y;
-
 		for(int i = 0; i < xiDom.size(); i++){
-			if(!xi.contains(i)){ continue; }
+			if(xi.removed(i)){ continue; }
 			boolean satisfiable = false;
 			for(int j = 0; j < xjDom.size(); j++){
-				if(!xj.contains(j)){ continue; }
+				if(xj.removed(j)){ continue; }
 				x = a.getOrientation() ? xiDom.get(i) : xjDom.get(j);
 				y = a.getOrientation() ? xjDom.get(j) : xiDom.get(i);
 				if(ijCons.relation(x, y)){
@@ -201,22 +229,22 @@ public abstract class CSProb<T>{
 			return assignment;
 		}
 		Variable<T> v = getUnassignedVar(assignment);
-		for(T value: v.getDomain()){ 
-			if(!v.contains(value)){ continue; } //value has been removed
+		ArrayList<T> dom = v.getDomain();
+		ArrayList<T> result;
+		for(int i = 0; i < dom.size(); i++){
+			if(v.removed(i)){ continue; }
+			T value = dom.get(i);
 			if(isConsistent(v, value, assignment)){
 				assignment.set(v.getHash(), value);
 				v.assign(value);
-				//inferencing
-				if(MAC(v, assignment)){
-					ArrayList<T> result = backtracking(assignment);
-					if(result != null){
-						return result;
-					}
-				}
-				else{//reset domains of v and remaining unassigned variables. Call AC().
+
+				if(MAC(v, assignment) && (result = backtrackingWithInference(assignment)) != null){ //inference
+					return result;
+				}else{
+					//reset domains of v and remaining unassigned variables. Call AC().
 					v.reset();
-					for(int i = 0; i < assignment.size(); i++){
-						if(assignment.get(i) == null){ vars.get(i).reset(); }
+					for(int j = 0; j < assignment.size(); j++){
+						if(assignment.get(j) == null){ vars.get(j).reset(); }
 					}
 					AC();
 				}

@@ -27,7 +27,10 @@ public class QueenProblem extends CSProb<Integer>{
 	}
 
 	public void printSolution(ArrayList<Integer> assignment){
-
+		System.out.println("\nQUEEN PROBLEM (Q_i denotes queen in column i, indexing starts at 0):");
+		for(int i = 0; i < n; i++){
+			System.out.println(getVar(i).toString() + " is in row " + assignment.get(i) % n);
+		}
 	}
 
 	public QueenProblem(int size){
@@ -36,14 +39,14 @@ public class QueenProblem extends CSProb<Integer>{
 
 		ArrayList<QueenVar> vars = new ArrayList<QueenVar>();
 
-		//initialize n vars, each variable corresponds to queens position within a column
+		//initialize n vars, each variable corresponds to queen's position within a column
 		for(int i = 0; i < size; i++){							//col#: 0   1   ... n-1
 			ArrayList<Integer> dom = new ArrayList<Integer>(); 	//0		0   n   ... n^2-n <- Board Indexing
 			for(int j = 0; j < size; j++){						//1		1	n+1 ... . 
 				dom.add(j + size * i);							//.		.	.   ... .
 			}													//n-1	n-1 2n-1 .. n^2-1
 			Domain<Integer> d = new Domain<Integer>(dom);
-			QueenVar v = new QueenVar("", d);
+			QueenVar v = new QueenVar("Q_" + i, d);
 			vars.add(v);
 			addVar(v);
 		}

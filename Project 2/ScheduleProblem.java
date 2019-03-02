@@ -29,34 +29,25 @@ public class ScheduleProblem extends CSProb<Integer>{
 	}
 
 	public void printSolution(ArrayList<Integer> assignment){
+		System.out.println("\nJOB SCHEDULING:");
 		for(int i = 0; i < count; i++){
 			System.out.println(getVar(i).toString() + " is performed at time t = " + assignment.get(i));
 		}
 	}
 
-	// creates instance of australian map problem
+	// creates instance of job problem
 	public ScheduleProblem(){
 		super();
-		//ArrayList<Integer> dom1 = new ArrayList<Integer>();
-		//dom1.add(1);
-		//dom1.add(11);
 		ArrayList<Integer> dom = new ArrayList<Integer>();
 		for(int i = 1; i <= 27; i++){
 			dom.add(i);
 		}
 										// 0		1			2			3			4			5			6			7		8			9			10		11			12		13			14
 		String[] states = new String[]{"AXLE_f", "AXLE_b", "Wheel_rf", "Wheel_lf", "Wheel_rb", "Wheel_lb", "Nuts_rf", "Nuts_lf", "Nuts_rb", "Nuts_lb", "Cap_rf", "Cap_lf", "Cap_rb", "Cap_lb", "Inspect"};
-		//int[] time = {10,10,1,1,1,1,2,2,2,2,1,1,1,1,3};
+		//times = {10,10,1,1,1,1,2,2,2,2,1,1,1,1,3}
 
 		ArrayList<ScheduleVar> vars = new ArrayList<ScheduleVar>();
 		for(String s: states){
-			/*
-			if(s.equals("AXLE_f") || s.equals("AXLE_b")){
-				d = new Domain<Integer>(dom1);
-			}else
-			{
-				d = new Domain<Integer>(dom);
-			}*/
 			Domain<Integer> d = new Domain<Integer>(dom);
 			ScheduleVar v = new ScheduleVar(s, d);
 			vars.add(v);

@@ -13,17 +13,9 @@ public class Domain<T>{
 
 	ArrayList<T> getList(){ return domain; }
 	int size(){ return domain.size() - removed.cardinality(); }
-
 	void assign(T v){ removed.set(0, domain.size()); removed.flip(domain.indexOf(v)); } //removes all but idx from domain
 	void remove(int idx){ removed.set(idx); } //remove domain element at idx
 	void reset(){ removed.clear(); } //set contains to false (full domain)
 	boolean removed(int idx){ return removed.get(idx); } //has domain element at idx been removed
-	boolean isEmpty(){
-		for(int i = 0; i < domain.size(); i++){
-			if(removed.get(i) == false){
-				return false;
-			}
-		}
-		return true;
-	}
+	boolean isEmpty(){ return size() == 0; }
 }

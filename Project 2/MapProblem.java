@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class MapProblem extends CSProb<String>{
 	public int count = 0;
 	static Relation<String> neq = (String a, String b)->(!a.equals(b));
+	static String[] states = new String[]{"T", "WA", "NT", "Q", "NSW", "V", "SA"};
 
 	public class MapVar extends Variable<String>{
 		public MapVar(String s, Domain<String> d){
@@ -25,6 +26,7 @@ public class MapProblem extends CSProb<String>{
 	}
 
 	public void printSolution(ArrayList<String> assignment){
+		System.out.println("\nAUSTRALIAN MAP COLORING:");
 		for(int i = 0; i < count; i++){
 			System.out.println(getVar(i).toString() + " is colored " + assignment.get(i));
 		}
@@ -33,15 +35,11 @@ public class MapProblem extends CSProb<String>{
 	// creates instance of australian map problem
 	public MapProblem(){
 		super();
-
 		ArrayList<String> colors = new ArrayList<String>();
 		colors.add("red");
 		colors.add("green");
 		colors.add("blue");
-
-		String[] states = new String[]{"T", "WA", "NT", "Q", "NSW", "V", "SA"};
 		ArrayList<MapVar> vars = new ArrayList<MapVar>();
-
 		for(String s: states){
 			Domain<String> d = new Domain<String>(colors);
 			MapVar v = new MapVar(s, d);
