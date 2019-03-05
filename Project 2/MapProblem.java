@@ -25,8 +25,17 @@ public class MapProblem extends CSProb<String>{
 			return new MapConstraint(sc, neq);
 	}
 
+	public void printCSP(){
+		System.out.print("VARIABLES: ");
+		for(Variable<String> v: getv()){ 
+			System.out.print(v.toString() + " ");
+		}
+		System.out.println("\nCONSTRAINTS: SA not equal to WA, NT, Q, NSW, V.\nWA not equal to NT.\nNT not equal to Q.\nQ not equal to NSW.\nNSW not equal to V.\n");
+	}
+
 	public void printSolution(ArrayList<String> assignment){
-		System.out.println("\nAUSTRALIAN MAP COLORING:");
+		System.out.println("\nAUSTRALIAN MAP COLORING:\n");
+		printCSP();
 		for(int i = 0; i < count; i++){
 			System.out.println(getVar(i).toString() + " is colored " + assignment.get(i));
 		}

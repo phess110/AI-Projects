@@ -28,8 +28,19 @@ public class ScheduleProblem extends CSProb<Integer>{
 			return new ScheduleConstraint(sc, r);
 	}
 
+	public void printCSP(){
+		int times[] = {10,10,1,1,1,1,2,2,2,2,1,1,1,1,3};
+		System.out.print("VARIABLES: ");
+		ArrayList<Variable<Integer>> vs = getv();
+		for(int i = 0; i < vs.size(); i++){ 
+			System.out.print(vs.get(i).toString() + " (time: " + times[i] + ") ");
+		}
+		System.out.println("\nCONSTRAINTS: Front axle before front wheels. Back axle before back wheels. Axles cannot be done in parallel.\nWheel_i before Nuts_i. Nuts_i before Cap_i. Inspection is last.\n");
+	}
+
 	public void printSolution(ArrayList<Integer> assignment){
-		System.out.println("\nJOB SCHEDULING:");
+		System.out.println("\nJOB SCHEDULING:\n");
+		printCSP();
 		for(int i = 0; i < count; i++){
 			System.out.println(getVar(i).toString() + " is performed at time t = " + assignment.get(i));
 		}
@@ -44,7 +55,6 @@ public class ScheduleProblem extends CSProb<Integer>{
 		}
 										// 0		1			2			3			4			5			6			7		8			9			10		11			12		13			14
 		String[] states = new String[]{"AXLE_f", "AXLE_b", "Wheel_rf", "Wheel_lf", "Wheel_rb", "Wheel_lb", "Nuts_rf", "Nuts_lf", "Nuts_rb", "Nuts_lb", "Cap_rf", "Cap_lf", "Cap_rb", "Cap_lb", "Inspect"};
-		//times = {10,10,1,1,1,1,2,2,2,2,1,1,1,1,3}
 
 		ArrayList<ScheduleVar> vars = new ArrayList<ScheduleVar>();
 		for(String s: states){

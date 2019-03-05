@@ -17,6 +17,9 @@ public abstract class CSProb<T>{
 	public Variable<T> getVar(int idx){ return vars.get(idx); }
 	public void addVar(Variable<T> v){ vars.add(v); }
 	public void addConstraint(Constraint<T> c){ cons.add(c); }
+	public ArrayList<Variable<T>> getv(){ return vars; }
+	public ArrayList<Constraint<T>> getc(){ return cons; }
+	public abstract void printCSP();
 
 	public ArrayList<T> backtrackingSearch(){
 		ArrayList<T> assignment = new ArrayList<T>(vars.size());

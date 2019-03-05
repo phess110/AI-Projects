@@ -26,10 +26,26 @@ public class QueenProblem extends CSProb<Integer>{
 			return new QueenConstraint(sc, isNonAttacking);
 	}
 
+	public void printCSP(){
+		System.out.print("VARIABLES: ");
+		for(Variable<Integer> v: getv()){ 
+			System.out.print(v.toString() + " ");
+		}
+		System.out.println("\nCONSTAINTS: For each 1 <= i < j <= n, Q_i cannot attack Q_j.\n");
+	}
+
 	public void printSolution(ArrayList<Integer> assignment){
-		System.out.println("\nQUEEN PROBLEM (Q_i denotes queen in column i, indexing starts at 0):");
+		System.out.println("\nQUEEN PROBLEM (Q_i denotes queen in column i, indexing starts at 0):\n");
+		printCSP();
 		for(int i = 0; i < n; i++){
 			System.out.println(getVar(i).toString() + " is in row " + assignment.get(i) % n);
+		}
+		System.out.println();
+		for(int i = 0; i < n; i++){
+			for(int j = 0; j < n; j++){
+				System.out.print((assignment.get(j)%n == i) ? "Q|" : "_|");
+			}
+			System.out.println();
 		}
 	}
 

@@ -10,7 +10,7 @@ public class Runner{
 		jobSchedule.run();
 
 		Scanner sc = new Scanner(System.in);
-		System.out.print("\nEnter the board dimension: ");
+		System.out.print("\nEnter the board dimension for n-Queens: ");
 		int n = sc.nextInt();
 		QueenProblem nqueens = new QueenProblem(n); 
 		nqueens.runWithInference();
