@@ -11,7 +11,7 @@ import org.xml.sax.SAXException;
 import java.util.List;
 
 public class ExactInference{
-	static final String format = "usage: java -cp \"./bin\" ExactInference filename.[xml|bif] [queryVar] [evidenceVar [value in domain]]*";
+	static final String format = "usage: java -cp ./bin ExactInference filename.[xml|bif] [queryVar] [evidenceVar [value in domain]]*";
 
 	public static Distribution query(RandomVariable x, Assignment e, BayesianNetwork network){ 
 		return enumAsk(x, e, network);
@@ -20,6 +20,13 @@ public class ExactInference{
 	public static Distribution enumAsk(RandomVariable X, Assignment e, BayesianNetwork bn){
 		Domain Dx = X.getDomain();
 		Distribution dist = new Distribution(X);
+		if(e.containsKey(X)){ // special case where X is in the evidence
+			for(Value o : Dx){
+				dist.put(o, 0.0);
+			}
+			dist.put(e.get(X), 1.0);
+			return dist;
+		}
 		List<RandomVariable> tSort = bn.getVariablesSortedTopologically();
 
 		for(Value o : Dx){
@@ -50,8 +57,8 @@ public class ExactInference{
 	}
 
 	public static void main(String [] argv) throws IOException, ParserConfigurationException, SAXException{
-		Boolean isXML = true;
-		if (argv.length < 2 || argv.length % 2 != 0 || !(argv[0].contains(".bif") || (isXML = argv[0].contains(".xml")))) {
+		Boolean isXML = argv[0].contains(".xml");
+		if (argv.length < 2 || argv.length % 2 != 0 || !(argv[0].contains(".bif") || isXML)) {
 			System.err.println(format);
 		}
 
@@ -76,6 +83,10 @@ public class ExactInference{
 					e.put(evar, v);
 					break;
 				}
+			}
+			if(!e.containsKey(evar)){
+				System.err.println("Invalid value assignment to evidence variable.");
+				System.exit(1);
 			}
 		}
 

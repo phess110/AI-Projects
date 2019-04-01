@@ -56,6 +56,7 @@ public interface ApproximateBayesianInference{
 	}
 
 	/* Restrict assignment to only include values for given set */
+	/*
 	public static Assignment restrictAssignment(Assignment e, Set<RandomVariable> restict){
 		Assignment eResticted = new Assignment();
 		for(RandomVariable v : restict){
@@ -63,6 +64,7 @@ public interface ApproximateBayesianInference{
 		}
 		return eResticted;
 	}
+	*/
 
 	/* 
 	Must ensure len(argv) >= 3 and is odd before calling. 
@@ -76,6 +78,10 @@ public interface ApproximateBayesianInference{
 					e.put(evar, v);
 					break;
 				}
+			}
+			if(!e.containsKey(evar)){
+				System.err.println("Invalid value assignment to evidence variable.");
+				System.exit(1);
 			}
 		}
 	}

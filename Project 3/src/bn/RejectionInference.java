@@ -13,7 +13,7 @@ import org.xml.sax.SAXException;
 public class RejectionInference implements ApproximateBayesianInference {
 
 	static int N;
-	static final String format = "usage: java -cp \"./bin\" RejectionInference filename.[xml|bif] [numSamples] [queryVar] [evidenceVar [value in domain]]*";
+	static final String format = "usage: java -cp ./bin RejectionInference filename.[xml|bif] [numSamples] [queryVar] [evidenceVar [value in domain]]*";
 	static List<RandomVariable> sortedVars;
 
 	public static Distribution query(RandomVariable X, Assignment e, BayesianNetwork bn){ 
@@ -54,8 +54,8 @@ public class RejectionInference implements ApproximateBayesianInference {
 
 	public static void main(String [] argv) throws IOException, ParserConfigurationException, SAXException{
 		BayesianNetwork network;
-		Boolean isXML = true;
-		if (argv.length < 3 || argv.length % 2 != 1 || !(argv[0].contains(".bif") || (isXML = argv[0].contains(".xml")))) {
+		Boolean isXML = argv[0].contains(".xml");
+		if (argv.length < 3 || argv.length % 2 != 1 || !(argv[0].contains(".bif") || isXML)) {
 			System.err.println(format);
 		}
 		
