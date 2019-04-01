@@ -1,2 +1,2 @@
 @ECHO OFF
-javac -d bin ./bn\*.java
+javac -d bin ./bn/*.java
