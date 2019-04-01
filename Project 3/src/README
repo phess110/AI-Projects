@@ -4,12 +4,10 @@ March 2019
 
 To compile, enter 'make' in the src directory. (if that doesn't work for some reason, try: javac -d bin ./bn/*.java)
 
-BACKSLASH BEFORE *?????
-
-To run ExactInference: java -cp "./bin" ExactInference filename.[xml|bif] [queryVar] [evidenceVar [value in domain]]*
-To run RejectionInference: java -cp "./bin" RejectionInference filename.[xml|bif] [numSamples] [queryVar] [evidenceVar [value in domain]]*
-To run WeightedInference: java -cp "./bin" WeightedInference filename.[xml|bif] [numSamples] [queryVar] [evidenceVar [value in domain]]*
-To run Gibbs: java -cp "./bin" Gibbs filename.[xml|bif] [numSamples] [queryVar] [evidenceVar [value in domain]]*
+To run ExactInference:      java -cp ./bin ExactInference filename.[xml|bif] [queryVar] [evidenceVar [value in domain]]*
+To run RejectionInference:  java -cp ./bin RejectionInference filename.[xml|bif] [numSamples] [queryVar] [evidenceVar [value in domain]]*
+To run WeightedInference:   java -cp ./bin WeightedInference filename.[xml|bif] [numSamples] [queryVar] [evidenceVar [value in domain]]*
+To run Gibbs:               java -cp ./bin Gibbs filename.[xml|bif] [numSamples] [queryVar] [evidenceVar [value in domain]]*
 
 e.g. java -cp "./bin" ExactInference aima-alarm.xml B J true M true
 
