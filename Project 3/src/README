@@ -2,7 +2,7 @@ Peter Hess
 CSC 242 - Project 3 - Bayesian Inference
 March 2019
 
-To compile, enter 'make' in the src directory. (if that doesn't work for some reason, try: javac -d bin ./bn/*.java)
+To compile enter: 'javac -d bin ./bn/*.java' in the src directory
 
 To run ExactInference:      java -cp ./bin ExactInference filename.[xml|bif] [queryVar] [evidenceVar [value in domain]]*
 To run RejectionInference:  java -cp ./bin RejectionInference filename.[xml|bif] [numSamples] [queryVar] [evidenceVar [value in domain]]*
