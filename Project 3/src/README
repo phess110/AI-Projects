@@ -10,3 +10,9 @@ To run WeightedInference: java -cp "./bin" WeightedInference filename.[xml|bif] 
 To run Gibbs: java -cp "./bin" Gibbs filename.[xml|bif] [numSamples] [queryVar] [evidenceVar [value in domain]]*
 
 e.g. java -cp "./bin" ExactInference aima-alarm.xml B J true M true
+
+Sample Output: java -cp "./bin" Gibbs aima-alarm.xml 100000 A J true M true
+P(A = false|e) = 0.24209
+P(A = true|e) = 0.75791
+
+NOTE: The order of values displayed may vary between different executions of the same query.
