@@ -1,0 +1,45 @@
+Peter Hess
+CSC 242 - Project 4
+April 2019
+
+----------------------------
+
+Linear Classifiers.
+
+How to run: 
+
+flags: 
+	-f [filename] 
+		Provide filename of example data (REQUIRED)
+
+	-n [positive integer]
+		Number of weight updates (optional - defaults to 10000)
+
+	-a [double]
+		value of alpha/step size (optional - defaults to _ with earthquake and _ with house data sets)
+
+	-l
+		uses logistic threshold (optional - default to hard threshold if not present)
+
+	-d
+		use decaying step size, decays at a rate of O(1/t), if present (optional)
+
+----------------------------
+
+Neural Networks
+
+How to run: 
+
+flags: 
+
+	-f [filename] 
+		Provide filename of example data (REQUIRED)
+
+	-a [double]
+		value of alpha/step size (optional - defaults to _ with earthquake and _ with house data sets)
+
+	-l
+		uses logistic threshold (optional - default to hard threshold if not present)
+
+	-d
+		use decaying step size, decays at a rate of O(1/t), if present (optional)
