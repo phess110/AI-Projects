@@ -80,7 +80,7 @@ def importance(a, examples):
 
 # Returns the entropy of the distribution: Bernoulli(p)
 def entropy(p):
-	if(p == 0 || p == 1):
+	if(p == 0 or p == 1):
 		return 0.0
 	return -p*np.log2(p) - (1-p)*np.log2(1-p)
 
