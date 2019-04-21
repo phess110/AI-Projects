@@ -8,7 +8,9 @@ time = 0
 decay = False # -d flag 
 logisticThreshold = False # -l flag
 numIter = 10000	# -n flag
-alpha = 0.01 # -a flag
+alpha = 0.1 # -a flag
+showTrace = True
+showGraphs = False
 
 N = 0 # example arity
 weights = [] # to be randomly initialized
@@ -33,7 +35,8 @@ def logistic(x):
 
 # this is constant if decay is false. Otherwise, it decays at a rate of O(1/t)
 def stepSize():
-	return alpha/(alpha+time) if decay else alpha
+	return 1000/(1000+time) if decay else alpha
+	# alternative rule: alpha*numIter/(numIter+time**2) if decay else alpha
 
 # update weights, learns from single example
 def update(example, output):
@@ -95,6 +98,10 @@ for i in range(0, len(sys.argv)):
 		i += 1
 	elif(sys.argv[i] == '-l'):
 		logisticThreshold = True
+	elif(sys.argv[i] == '-t'):
+		showTrace = False
+	elif(sys.argv[i] == '-g'):
+		showGraphs = True
 
 (examples, outputs) = LinearClassifierIO.readFile(filename) # read example data
 
@@ -103,14 +110,18 @@ N = len(examples[0]) # arity of sample data
 for i in range(N):
 	weights.append(random.uniform(-1,1))
 
-errorSampleSize = numIter//min(numIter, 1000) # how many times should the error be sampled
+errorSampleSize = numIter//min(numIter, 1000) # how often should the error be sampled
 error = []
 
 learn()
-print("Weights of separator w_0 + w_1 x_1 + w_2 x_2 = 0:")
-print(weights)
-print("Percent Corrected Classified: ")
-print(error)
 
-LinearClassifierIO.showScatter(examples, outputs, weights)
-LinearClassifierIO.showError(error, errorSampleSize)
+print("Weights of separator w_0, w_1, ..., w_n:")
+print(weights)
+if(showTrace):
+	print("Error Data:")
+	print(error)
+'''
+if(showGraphs):
+	LinearClassifierIO.showScatter(examples, outputs, weights)
+	LinearClassifierIO.showError(error, errorSampleSize)
+'''

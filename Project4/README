@@ -2,44 +2,54 @@ Peter Hess
 CSC 242 - Project 4
 April 2019
 
-----------------------------
-
 Linear Classifiers.
 
-How to run: 
+To run go in src directory and enter: py LinearClassifier.py -f filename (see optional flags listed below)
+
+e.g. py LinearClassifier.py -f earthquake-clean.data.txt -n 700 -a 0.9 -d -l
+Runs the linear classifier on the clean earthquake data for 700 iterations with alpha = 0.9, decay, and uses a logistic threshold.
 
 flags: 
 	-f [filename] 
 		Provide filename of example data (REQUIRED)
-
 	-n [positive integer]
-		Number of weight updates (optional - defaults to 10000)
-
-	-a [double]
-		value of alpha/step size (optional - defaults to _ with earthquake and _ with house data sets)
-
+		Number of weight updates (optional - default = 10000)
+	-a [float]
+		value of alpha/step size (optional - default = 0.1)
 	-l
-		uses logistic threshold (optional - default to hard threshold if not present)
-
+		uses logistic threshold (optional - default = hard threshold)
 	-d
-		use decaying step size, decays at a rate of O(1/t), if present (optional)
+		use decaying step size, decays at a rate of O(1/t) (optional)
+	-t
+		turn OFF trace (don't show error data)
 
+The program outputs the error data (% correct for the hard threshold and average squared error if a logistic threshold is used) in increasing order of time. It also outputs the weight vector W.
 ----------------------------
 
-Neural Networks
+Neural Networks.
 
-How to run: 
+To run: py NeuralNetTest.py -f filename (see optional flags listed below)
+
+e.g. py NeuralNetTest.py -f iris.data.txt -n 1000 
+Builds/tests the iris neural net. Running it for 1000 epochs.
+NOTE: You can run the xor neural network using (-f xor) and the majority neural network using (-f majority). 
 
 flags: 
-
 	-f [filename] 
 		Provide filename of example data (REQUIRED)
-
+	-n [positive integer]
+		Number of epochs (optional - default = 100)
 	-a [double]
-		value of alpha/step size (optional - defaults to _ with earthquake and _ with house data sets)
-
-	-l
-		uses logistic threshold (optional - default to hard threshold if not present)
-
+		value of alpha/step size (optional - default = 0.1)
 	-d
-		use decaying step size, decays at a rate of O(1/t), if present (optional)
+		use decaying step size, decays at a rate of O(1/t) (optional)
+	-k
+		Uses k-fold cross-validation for k = 10 (optional)
+
+Without k-fold validation, the program outputs the accuracy measurements of the neural network over time (once per epoch). 
+It also shows the final accuracy on the training set during the last epoch.
+
+If k-fold cross-validation is on, the program removes 1/k of the examples for testing and trains on the remainder for the given number of epochs.
+Then it records the accuracy on the test set. It repeats this k times, then prints the accuracy for each run as well the the average accuracy.
+
+Running backprop on the 60k training MNIST examples for 1 epoch, a 32 hidden-node neural net achieved 81.22% accuracy on the 10k test samples.
