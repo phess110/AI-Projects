@@ -33,12 +33,12 @@ where ![equation](https://latex.codecogs.com/svg.latex?%5Ctext%7Bparents%7D%28X_
   
   - A *neural network* consists of *nodes* (units) and weighted edges. We implement a *feed-forward neural network (FFNN)*, in which units in one layer are only connected to units in the immediately adjacent layer (we partition the set of all nodes into node sets, the first of which is the *input layer*, the last of which is the *output layer*, and the ones in between are *hidden layers*). Let ![equation](https://latex.codecogs.com/svg.latex?w_%7Bi%2Cj%2Ck%7D) denote the weight of the edge from node j in node set i to node k (in node set i+1). The input to a node is the weighted sum of activation of its in-neighbors and its activation is ![equation](https://latex.codecogs.com/svg.latex?a_%7Bi&plus;1%2Ck%7D%20%3D%20g%5Cleft%28%5Csum_%7Bj%3D1%7D%5E%7Bn_i%7D%20w_%7Bi%2Cj%2Ck%7D%5Ccdot%20a_%7Bi%2Cj%7D%5Cright%20%29). The backpropagation algorithm adjusts the weights in the network to improve its accuracy on the given training set. The errors are packprogagated according to: 
   
-![equation](https://latex.codecogs.com/svg.latex?%5CDelta_%7Bi%2Cj%7D%20%3D%20%5Cbegin%7Bcases%7D%20g%27%28in_%7Bi%2Cj%7D%29%5Csum_%7Bk%7Dw_%7Bi%2Cj%2Ck%7D%5CDelta_%7Bi&plus;1%2Ck%7D%20%26%5Ctext%7Bfor%20nodes%20%7D%20j%20%5Ctext%7B%20in%20hidden%20layers%20%7D%20i%5C%5C%20g%27%28in_%7Bi%2Cj%7D%29%28y_j-a_j%29%20%26%20%5Ctext%7Bfor%20nodes%20%7D%20j%20%5Ctext%7B%20in%20output%20layer%20%7D%20i%20%5Cend%7Bcases%7D)
+    ![equation](https://latex.codecogs.com/svg.latex?%5CDelta_%7Bi%2Cj%7D%20%3D%20%5Cbegin%7Bcases%7D%20g%27%28in_%7Bi%2Cj%7D%29%5Csum_%7Bk%7Dw_%7Bi%2Cj%2Ck%7D%5CDelta_%7Bi&plus;1%2Ck%7D%20%26%5Ctext%7Bfor%20nodes%20%7D%20j%20%5Ctext%7B%20in%20hidden%20layers%20%7D%20i%5C%5C%20g%27%28in_%7Bi%2Cj%7D%29%28y_j-a_j%29%20%26%20%5Ctext%7Bfor%20nodes%20%7D%20j%20%5Ctext%7B%20in%20output%20layer%20%7D%20i%20%5Cend%7Bcases%7D)
 
-giving rise to the update rule
+    giving rise to the update rule
 
-![equation](https://latex.codecogs.com/svg.latex?w_%7Bi%2Cj%2Ck%7D%20%5Cgets%20w_%7Bi%2Cj%2Ck%7D%20&plus;%20%5Calpha%5Ccdot%20a_%7Bi%2Cj%7D%5Ccdot%20%5CDelta_%7Bi&plus;1%2Ck%7D)
+    ![equation](https://latex.codecogs.com/svg.latex?w_%7Bi%2Cj%2Ck%7D%20%5Cgets%20w_%7Bi%2Cj%2Ck%7D%20&plus;%20%5Calpha%5Ccdot%20a_%7Bi%2Cj%7D%5Ccdot%20%5CDelta_%7Bi&plus;1%2Ck%7D)
   
-We implement neural networks to compute the XOR and Majority functions and well as a handwritten digit 'recognizer'. 
+    We implement neural networks to compute the XOR and Majority functions and well as a handwritten digit 'recognizer'. 
   
   
