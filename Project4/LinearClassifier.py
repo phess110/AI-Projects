@@ -35,7 +35,7 @@ def logistic(x):
 
 # this is constant if decay is false. Otherwise, it decays at a rate of O(1/t)
 def stepSize():
-	return 1000/(1000+time) if decay else alpha
+	return 1000./(1000+time) if decay else alpha
 	# alternative rule: alpha*numIter/(numIter+time**2) if decay else alpha
 
 # update weights, learns from single example
@@ -73,7 +73,7 @@ def portionCorrect():
 	for i in range(n):
 		if(outputs[i] == hypothesis(examples[i])):
 			c += 1
-	return c/n
+	return c/float(n)
 
 # calculate averaged squared error 1/n * SUM [y-hw(x)]^2 (soft threshold)
 def sqrdError():

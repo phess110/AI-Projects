@@ -71,7 +71,7 @@ class NeuralNet:
 			self.forwardProp(example)
 			if(output[self.decision()] > 0.99): # test if the decision node is the one that was supposed to be activated
 				correctCount += 1
-		return correctCount/len(testExs)
+		return correctCount/float(len(testExs))
 	
 	# Backpropagation algorithm for feed-forward NNs.
 	# 	|examples| should equal |outputs| 
@@ -97,7 +97,7 @@ class NeuralNet:
 			#	for j in self.layers[l]:
 			#		for i in j.parents:
 			#			i.updateWeight(j, stepSize(time))
-		return correctCount/len(outputs)
+		return correctCount/float(len(outputs))
 
 	def forwardProp(self, example):
 		inputNodes = self.inputLayer() # set activation inputs from example

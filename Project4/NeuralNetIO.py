@@ -76,5 +76,5 @@ class ImageReader(FileReader):
 	def nextImage(self):
 		data = []
 		for i in range(self.nrows * self.ncols):
-			data.append(float(int.from_bytes(self.file.read(1), "big"))/256)
+			data.append(float(int.from_bytes(self.file.read(1), "big"))/256.)
 		return data
