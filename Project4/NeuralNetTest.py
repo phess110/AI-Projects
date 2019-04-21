@@ -3,12 +3,12 @@ import sys
 import random as rand
 import NeuralNet as NN
 import NeuralNetIO as NNio
-
+'''
 # For graph-making only:
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
+'''
 # Read argv
 filename = ""
 numIter = 100

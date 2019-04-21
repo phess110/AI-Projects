@@ -4,9 +4,9 @@ April 2019
 
 Linear Classifiers.
 
-To run go in src directory and enter: py LinearClassifier.py -f filename (see optional flags listed below)
+To run go in src directory and enter: python3 LinearClassifier.py -f filename (see optional flags listed below)
 
-e.g. python LinearClassifier.py -f earthquake-clean.data.txt -n 700 -a 0.9 -d -l
+e.g. python3 LinearClassifier.py -f earthquake-clean.data.txt -n 700 -a 0.9 -d -l
 Runs the linear classifier on the clean earthquake data for 700 iterations with alpha = 0.9, decay, and uses a logistic threshold.
 
 flags: 
@@ -28,9 +28,9 @@ The program outputs the error data (% correct for the hard threshold and average
 
 Neural Networks.
 
-To run: python NeuralNetTest.py -f filename (see optional flags listed below)
+To run: python3 NeuralNetTest.py -f filename (see optional flags listed below)
 
-e.g. py NeuralNetTest.py -f iris.data.txt -n 1000 
+e.g. python3 NeuralNetTest.py -f iris.data.txt -n 1000 
 Builds/tests the iris neural net. Running it for 1000 epochs.
 NOTE: You can run the xor neural network using (-f xor) and the majority neural network using (-f majority). 
 
