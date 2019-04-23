@@ -4,7 +4,7 @@ import random as rand
 import NeuralNet as NN
 import NeuralNetIO as NNio
 '''
-# For graph-making only:
+# For graph-making only: must uncomment to get graphs
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -113,6 +113,7 @@ def runNetwork(file):
 			plotOverTime(accuracy, scale = 100, title = "MNIST NN", yAxisLabel = "% Correct",  xAxisLabel = "Samples Trained")
 			plotOverTime(errors, scale = 100, title = "MNIST NN", yAxisLabel="Error Rate", xAxisLabel = "Samples Trained")
 			nn.toFile("Trained-MNIST-Network.txt")
+		print("Accuracy: " + str(accuracy))
 		print("Final Accuracy: " + str(accuracy[-1]))
 		file1.close()
 		file2.close()

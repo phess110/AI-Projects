@@ -2,11 +2,16 @@ Peter Hess
 CSC 242 - Project 4
 April 2019
 
-Linear Classifiers.
+See the Graphs directory for the required graphs.
+
+LINEAR CLASSIFIERS.
 
 To run go in src directory and enter: python3 LinearClassifier.py -f filename (see optional flags listed below)
 
+If using Windows, switch 'python3' with 'py -3'
+
 e.g. python3 LinearClassifier.py -f earthquake-clean.data.txt -n 700 -a 0.9 -d -l
+
 Runs the linear classifier on the clean earthquake data for 700 iterations with alpha = 0.9, decay, and uses a logistic threshold.
 
 flags: 
@@ -14,7 +19,7 @@ flags:
 		Provide filename of example data (REQUIRED)
 	-n [positive integer]
 		Number of weight updates (optional - default = 10000)
-	-a [float]
+	-a [double]
 		value of alpha/step size (optional - default = 0.1)
 	-l
 		uses logistic threshold (optional - default = hard threshold)
@@ -26,13 +31,19 @@ flags:
 The program outputs the error data (% correct for the hard threshold and average squared error if a logistic threshold is used) in increasing order of time. It also outputs the weight vector W.
 ----------------------------
 
-Neural Networks.
+NEURAL NETWORKS.
 
-To run: python3 NeuralNetTest.py -f filename (see optional flags listed below)
+To run go in src directory and enter: python3 NeuralNetTest.py -f filename (see optional flags listed below)
+
+If using Windows, switch 'python3' with 'py -3'
 
 e.g. python3 NeuralNetTest.py -f iris.data.txt -n 1000 
-Builds/tests the iris neural net. Running it for 1000 epochs.
-NOTE: You can run the xor neural network using (-f xor) and the majority neural network using (-f majority). 
+
+This builds/tests the iris neural net. Running it for 1000 epochs. NOTE: You can run the xor neural network using (-f xor) and the majority neural network using (-f majority). 
+
+e.g. python3 NeuralNetTest.py -f iris.data.txt -n 100 -k
+
+Builds/tests iris nn using cross-validation with k=10. Separates 1/k of the examples for testing, trains on the rest for 100 epochs. Then tests on the separated set. Repeat k times.
 
 flags: 
 	-f [filename] 
@@ -47,7 +58,7 @@ flags:
 		Uses k-fold cross-validation for k = 10 (optional)
 
 Without k-fold validation, the program outputs the accuracy measurements of the neural network over time (once per epoch). 
-It also shows the final accuracy on the training set during the last epoch.
+It also shows the final accuracy on the training set during the last epoch. (Since training the MNIST neural net is slow, the data is record once every 100 examples, instead of once per epoch)
 
 If k-fold cross-validation is on, the program removes 1/k of the examples for testing and trains on the remainder for the given number of epochs.
 Then it records the accuracy on the test set. It repeats this k times, then prints the accuracy for each run as well the the average accuracy.

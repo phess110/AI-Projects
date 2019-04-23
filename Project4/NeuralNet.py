@@ -92,11 +92,6 @@ class NeuralNet:
 				for node in self.layers[l]:
 					self.hiddenError(node)
 					node.updateWeights(stepSize(time))
-			#
-			#for l in range(2,self.L+1): # update weights (including dummy weights!!)
-			#	for j in self.layers[l]:
-			#		for i in j.parents:
-			#			i.updateWeight(j, stepSize(time))
 		return correctCount/float(len(outputs))
 
 	def forwardProp(self, example):
